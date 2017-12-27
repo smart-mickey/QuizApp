@@ -58,9 +58,17 @@ class Main extends React.Component{
 
     onChangedCheck(label) {
         //const prev = this.state.checked[index]
-        const {checked} = this.state
-        if(checked[label] == undefined) checked[label] = true
-        else checked[label] = !checked[label]
+        const QUIZ = this.state.quiz[this.state.index]     
+        let {checked} = this.state
+        if(checked[label] == undefined){
+            if(QUIZ.type=='boolean') checked = {} 
+            checked[label] = true
+        } 
+        else{
+            if(QUIZ.type=='boolean') checked = {} 
+            checked[label] = !checked[label]
+        }
+        this.setState({checked})
     }
 
     onPressNext() {
@@ -77,25 +85,28 @@ class Main extends React.Component{
             alert("You selected nothing!")
             return
         }    
-         
+
         if(this.checkQuestion(answer)){
             this.setState({score: score + 0.5})
         }
         if(this.state.index == 9){
             let s = this.state.score
             if(this.checkQuestion(answer)) s = s + 0.5
+            this.isMount = false
             Alert.alert(
             'Your score is ' + s,
             'Would you like to test again?',
             [
                 {text: 'No', onPress: () => this.props.navigation.goBack()},
-                {text: 'Yes', onPress: () => {
+                {text: 'Yes', onPress: () => {                    
                     this.setState({
                         index: 0,
                         score: 0,
                         duration: 0,
                         checked: {}
                     })
+                    this.isMount = true
+                    this.startTimer()
                 }},
             ],
             { cancelable: false }
@@ -167,7 +178,7 @@ class Main extends React.Component{
                                 <View style={styles.labelItem} key={index}>
                                     <CheckBox
                                         checkboxStyle={{width: 15, height: 15, borderColor: 'black'}}
-                                        label={(index + 1)  + ': ' + decodeURIComponent(label)}
+                                        label={decodeURIComponent(label)}
                                         checked={_this.state.checked[label] == true}
                                         onChange={(checked) => _this.onChangedCheck(label)}
                                     />
