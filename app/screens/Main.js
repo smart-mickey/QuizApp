@@ -26,7 +26,8 @@ class Main extends React.Component{
             quiz: [],
             duration: 0,
             checked: {},
-            score: 0
+            score: 0,
+            labels: []
         }
     };  
 
@@ -34,6 +35,7 @@ class Main extends React.Component{
         this.isMount = true
         this.props.getQuestions((data) => {
             this.setState({quiz: data})
+            this.getLabels(data)
             this.startTimer()
         })
     }
@@ -48,6 +50,27 @@ class Main extends React.Component{
             _this.setState({duration: _this.state.duration + 1})
             _this.isMount && _this.startTimer()
         }, 1000)
+    }
+
+    getLabels(data){
+        const _this = this
+        const {labels} = this.state
+        data.map(function(quiz, index){
+            let temp = []
+            if(quiz.type == 'multiple'){
+                if(typeof quiz.correct_answer == 'string') temp.push(quiz.correct_answer)
+                else temp = temp.concat(quiz.correct_answer)                
+                if(typeof quiz.incorrect_answers == 'string') temp.push(quiz.incorrect_answers)
+                else temp = temp.concat(quiz.incorrect_answers)
+            }
+            else{//boolean
+                temp.push(quiz.correct_answer)
+                temp.push(quiz.incorrect_answers)
+            }            
+            temp = _this.shuffle(temp)
+            labels[index] = temp
+        })
+        this.setState({labels})
     }
 
     convertToClockTime(T) {
@@ -138,26 +161,31 @@ class Main extends React.Component{
           if (a[i] !== b[i]) return false;
         }
         return true;
-      }
+    }
+
+    shuffle(arra1) {
+        var ctr = arra1.length, temp, index;
+    
+    // While there are elements in the array
+        while (ctr > 0) {
+    // Pick a random index
+            index = Math.floor(Math.random() * ctr);
+    // Decrease ctr by 1
+            ctr--;
+    // And swap the last element with it
+            temp = arra1[ctr];
+            arra1[ctr] = arra1[index];
+            arra1[index] = temp;
+        }
+        return arra1;
+    }
 
 
     render(){
         const _this = this
-        let QUIZ = {}
-        let labels = []
-        if(this.state.quiz.length > 0){
-            QUIZ = this.state.quiz[this.state.index]
-            if(QUIZ == undefined){
-                return
-            }
-            if(typeof QUIZ.correct_answer == 'string') labels.push(QUIZ.correct_answer)
-            else labels = labels.concat(QUIZ.correct_answer)
-            
-            if(typeof QUIZ.incorrect_answers == 'string') labels.push(QUIZ.incorrect_answers)
-            else labels = labels.concat(QUIZ.incorrect_answers)
-            
-        }
-        
+        const {index, labels, quiz} = this.state
+        const QUIZ = quiz[index]
+        if(labels.length == 0) return null     
         return(
         <View style={styles.container}>
             <View style={styles.timeView}>
@@ -172,9 +200,9 @@ class Main extends React.Component{
                 }                
             </View>
             <View style={styles.answerView}>
-                <ScrollView style={{flex: 1}}>
+                <ScrollView style={{paddingBottom: 40}}>
                     {
-                        labels.map(function(label, index) {
+                        labels[index].map(function(label, index) {
                             return(
                                 <View style={styles.labelItem} key={index}>
                                     <CheckBox
@@ -198,6 +226,9 @@ class Main extends React.Component{
                     }
                     
                 </ScrollView>
+                <View>
+                <Text style={styles.buttonText}>{QUIZ.correct_answer}</Text>
+                </View>
             </View>
         </View>
         );
