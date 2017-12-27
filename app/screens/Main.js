@@ -65,8 +65,9 @@ class Main extends React.Component{
             checked[label] = true
         } 
         else{
+            const prev = checked[label]
             if(QUIZ.type=='boolean') checked = {} 
-            checked[label] = !checked[label]
+            checked[label] = !prev
         }
         this.setState({checked})
     }
