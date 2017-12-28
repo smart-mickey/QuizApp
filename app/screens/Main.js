@@ -1,7 +1,7 @@
 'use strict';
 /*jshint esversion: 6*//*jshint node: true*/
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, Alert} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -271,10 +271,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 40
-    },
-    labelText: {
-        fontSize: 20,
-        color: 'gray'
     },
     buttonView: {
         backgroundColor: 'blue',
