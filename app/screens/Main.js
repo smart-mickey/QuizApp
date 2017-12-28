@@ -113,8 +113,8 @@ class Main extends React.Component{
         if(this.checkQuestion(answer)){
             this.setState({score: score + 0.5})
         }
-        if(this.state.index == 9){
-            let s = this.state.score
+        if(index == 9){
+            let s = score
             if(this.checkQuestion(answer)) s = s + 0.5
             this.isMount = false
             Alert.alert(
