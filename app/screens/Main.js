@@ -185,7 +185,13 @@ class Main extends React.Component{
         const _this = this
         const {index, labels, quiz} = this.state
         const QUIZ = quiz[index]
-        if(labels.length == 0) return null     
+        if(labels.length == 0){
+            return(
+                <View style={styles.loadingView}>
+                    <Text style={styles.loadingText}>Loading...</Text>
+                </View>
+            )
+        } 
         return(
         <View style={styles.container}>
             <View style={styles.timeView}>
@@ -237,6 +243,15 @@ class Main extends React.Component{
 
 
 const styles = StyleSheet.create({
+    loadingView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loadingText: {
+        textAlign: 'center',
+        color: 'gray'
+    },
     container: {
         flex: 1,
         backgroundColor: 'white'
