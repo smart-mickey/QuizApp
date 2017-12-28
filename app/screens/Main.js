@@ -198,12 +198,7 @@ class Main extends React.Component{
                 <Text style={styles.timeText}>{this.convertToClockTime(this.state.duration)}</Text>
             </View>
             <View style={styles.titleView}>
-                {
-                    this.state.quiz.length == 0?
-                    <Text style={styles.quizText}>Loading...</Text>
-                    :
-                    <Text style={styles.quizText}>{(this.state.index + 1) + ': ' + decodeURIComponent(QUIZ.question)}</Text>
-                }                
+                <Text style={styles.quizText}>{(this.state.index + 1) + ': ' + decodeURIComponent(QUIZ.question)}</Text>
             </View>
             <View style={styles.answerView}>
                 <ScrollView style={{paddingBottom: 40}}>
@@ -221,20 +216,12 @@ class Main extends React.Component{
                             )
                         })
                     }
-                    {
-                        labels.length > 0?
-                        <View style={styles.nextButtonView}>
-                            <TouchableOpacity onPress={() => this.onPressNext()} style={styles.buttonView}>
-                                <Text style={styles.buttonText}>{this.state.index == 9 ? 'Finish Test' : 'Next Question'}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        :null
-                    }
-                    
+                    <View style={styles.nextButtonView}>
+                        <TouchableOpacity onPress={() => this.onPressNext()} style={styles.buttonView}>
+                            <Text style={styles.buttonText}>{this.state.index == 9 ? 'Finish Test' : 'Next Question'}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
-                <View>
-                <Text style={styles.buttonText}>{QUIZ.correct_answer}</Text>
-                </View>
             </View>
         </View>
         );

@@ -18,7 +18,6 @@ export const getQuestions = (callback) => {
         })
         .catch((e) => {
             alert(e.toString())
-        }
-    );
+        });
     }
 }
